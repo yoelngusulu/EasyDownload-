@@ -1,28 +1,32 @@
+<!-- Style Hii inaleta muonekano wa App ya kisasa -->
 <style>
-    /* Muonekano wa Vidmate-style */
-    .hero { background: #1e293b; color: white; padding: 60px 20px; }
-    .search-container { max-width: 700px; margin: 0 auto; display: flex; gap: 10px; }
-    .search-container input { flex: 1; padding: 15px; border-radius: 30px; border: none; }
-    .search-container button { padding: 10px 30px; border-radius: 30px; background: #e11d48; color: white; border: none; font-weight: bold; }
+    :root { --bg: #0f172a; --card: #1e293b; --accent: #f43f5e; }
+    body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
     
-    .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
-    .card { background: white; padding: 10px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .card img { width: 100%; border-radius: 8px; }
+    .navbar { padding: 20px; display: flex; justify-content: space-between; background: #020617; }
+    
+    .downloader-box { 
+        max-width: 800px; margin: 50px auto; padding: 40px; 
+        background: var(--card); border-radius: 20px; text-align: center;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
+    }
+    
+    .input-group { display: flex; gap: 10px; margin-top: 20px; }
+    input { flex: 1; padding: 15px; border-radius: 10px; border: none; background: #334155; color: white; }
+    button { padding: 15px 30px; background: var(--accent); border: none; border-radius: 10px; color: white; cursor: pointer; }
+    
+    .results-area { margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
+    .download-item { background: #334155; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; }
 </style>
 
-<section class="hero">
-    <h1>Pakua Video na Muziki kwa Urahisi</h1>
-    <div class="search-container">
-        <input type="text" placeholder="Paste link ya video hapa (YouTube, Facebook, Instagram...)" id="urlInput">
-        <button onclick="processDownload()">Download</button>
-    </div>
-</section>
+<div class="navbar"> <h2>EasySaver PRO</h2> </div>
 
-<section class="content-grid" id="trending">
-    <!-- Hapa ndipo video zinazovuma zitakaa -->
-    <div class="card">
-        <img src="video-placeholder.jpg" alt="Video">
-        <p>Video ya Kusisimua</p>
+<div class="downloader-box">
+    <h1>Media Downloader</h1>
+    <p>Paste link yako hapa chini kuanza kupakua:</p>
+    <div class="input-group">
+        <input type="text" id="url" placeholder="Mfano: https://youtube.com/...">
+        <button onclick="fetchVideo()">Changanua</button>
     </div>
-    <!-- ...card zaidi -->
-</section>
+    <div id="results" class="results-area"></div>
+</div>
