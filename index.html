@@ -1,32 +1,44 @@
-<!-- Style Hii inaleta muonekano wa App ya kisasa -->
-<style>
-    :root { --bg: #0f172a; --card: #1e293b; --accent: #f43f5e; }
-    body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
-    
-    .navbar { padding: 20px; display: flex; justify-content: space-between; background: #020617; }
-    
-    .downloader-box { 
-        max-width: 800px; margin: 50px auto; padding: 40px; 
-        background: var(--card); border-radius: 20px; text-align: center;
-        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
-    }
-    
-    .input-group { display: flex; gap: 10px; margin-top: 20px; }
-    input { flex: 1; padding: 15px; border-radius: 10px; border: none; background: #334155; color: white; }
-    button { padding: 15px 30px; background: var(--accent); border: none; border-radius: 10px; color: white; cursor: pointer; }
-    
-    .results-area { margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
-    .download-item { background: #334155; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; }
-</style>
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Saver - Pakua Video Mtandaoni</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        
+        /* Header */
+        header { background: #fff; padding: 15px 20px; border-bottom: 3px solid #e11d48; display: flex; align-items: center; gap: 10px; }
+        .logo { font-weight: bold; color: #e11d48; font-size: 1.5rem; }
 
-<div class="navbar"> <h2>EasySaver PRO</h2> </div>
+        /* Hero Section */
+        .hero { background: #fff; padding: 60px 20px; text-align: center; border-bottom: 1px solid #ddd; }
+        .search-box { max-width: 650px; margin: 20px auto; display: flex; }
+        .search-box input { flex: 1; padding: 15px; border: 2px solid #ddd; border-radius: 5px 0 0 5px; outline: none; }
+        .search-box button { padding: 15px 30px; background: #e11d48; border: none; color: white; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold; }
 
-<div class="downloader-box">
-    <h1>Media Downloader</h1>
-    <p>Paste link yako hapa chini kuanza kupakua:</p>
-    <div class="input-group">
-        <input type="text" id="url" placeholder="Mfano: https://youtube.com/...">
-        <button onclick="fetchVideo()">Changanua</button>
+        /* Maelezo chini */
+        .content { max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Easy Saver</div>
+</header>
+
+<div class="hero">
+    <h1>Easy Saver - Youtube Downloader</h1>
+    <div class="search-box">
+        <input type="text" id="url" placeholder="Search or paste link here...">
+        <button onclick="downloadVideo()">Start →</button>
     </div>
-    <div id="results" class="results-area"></div>
 </div>
+
+<div class="content">
+    <h2>Pakua Video na Audio kutoka YouTube</h2>
+    <p>Easy Saver ni zana ya bure inayokuruhusu kupakua video na audio kwa ubora wa juu kutoka YouTube, Facebook, na mitandao mingine kwa urahisi.</p>
+</div>
+
+</body>
+</html>
