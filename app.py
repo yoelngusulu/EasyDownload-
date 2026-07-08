@@ -6,9 +6,10 @@ import json
 from datetime import datetime
 import threading
 from pathlib import Path
+import traceback
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configuration
 DOWNLOAD_FOLDER = 'downloads'
@@ -40,9 +41,10 @@ def get_video_info(url):
     """Extract video information using yt-dlp"""
     try:
         ydl_opts = {
-            'quiet': True,
-            'no_warnings': True,
+            'quiet': False,
+            'no_warnings': False,
             'format': 'best',
+            'socket_timeout': 30,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -56,11 +58,9 @@ def get_video_info(url):
                 'source': detect_source(url),
             }
     except Exception as e:
-        return {
-            'error': str(e),
-            'title': 'Unknown',
-            'source': detect_source(url),
-        }
+        print(f"Error getting video info: {str(e)}")
+        print(traceback.format_exc())
+        raise
 
 def format_duration(seconds):
     """Convert seconds to HH:MM:SS format"""
@@ -77,17 +77,33 @@ def format_size(bytes_size):
     """Convert bytes to human readable format"""
     if not bytes_size:
         return 'N/A'
+    bytes_size = float(bytes_size)
     for unit in ['B', 'KB', 'MB', 'GB']:
         if bytes_size < 1024:
             return f'{bytes_size:.1f} {unit}'
         bytes_size /= 1024
     return 'N/A'
 
-@app.route('/api/video/info', methods=['POST'])
+@app.route('/api/health', methods=['GET'])
+def health():
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'OK', 
+        'timestamp': datetime.now().isoformat(),
+        'message': 'Easy Saver API is running'
+    }), 200
+
+@app.route('/api/video/info', methods=['POST', 'OPTIONS'])
 def video_info():
     """Get video information"""
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'OK'}), 200
+        
     try:
-        data = request.json
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Invalid JSON'}), 400
+            
         url = data.get('url', '').strip()
         
         if not url:
@@ -97,21 +113,27 @@ def video_info():
         if not url.startswith(('http://', 'https://')):
             url = 'https://' + url
         
+        print(f"Processing URL: {url}")
         info = get_video_info(url)
-        
-        if 'error' in info:
-            return jsonify({'error': info['error']}), 400
         
         return jsonify(info), 200
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        error_msg = str(e)
+        print(f"Error in video_info: {error_msg}")
+        return jsonify({'error': error_msg}), 400
 
-@app.route('/api/video/download', methods=['POST'])
+@app.route('/api/video/download', methods=['POST', 'OPTIONS'])
 def download_video():
     """Download video"""
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'OK'}), 200
+        
     try:
-        data = request.json
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Invalid JSON'}), 400
+            
         url = data.get('url', '').strip()
         format_type = data.get('format', 'mp4')  # mp4, mp3, 360p
         
@@ -121,6 +143,8 @@ def download_video():
         # Validate URL
         if not url.startswith(('http://', 'https://')):
             url = 'https://' + url
+        
+        print(f"Downloading: {url} as {format_type}")
         
         # Configure download options based on format
         if format_type == 'mp3':
@@ -133,27 +157,29 @@ def download_video():
                 }],
                 'outtmpl': os.path.join(TEMP_FOLDER, '%(title)s.%(ext)s'),
                 'quiet': False,
-                'no_warnings': True,
+                'no_warnings': False,
             }
         elif format_type == '360p':
             ydl_opts = {
-                'format': 'best[height<=360]',
+                'format': 'best[height<=360]/best',
                 'outtmpl': os.path.join(TEMP_FOLDER, '%(title)s.%(ext)s'),
                 'quiet': False,
-                'no_warnings': True,
+                'no_warnings': False,
             }
         else:  # mp4 (default)
             ydl_opts = {
                 'format': 'best[ext=mp4]/best',
                 'outtmpl': os.path.join(TEMP_FOLDER, '%(title)s.%(ext)s'),
                 'quiet': False,
-                'no_warnings': True,
+                'no_warnings': False,
             }
         
         # Download video
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
+        
+        print(f"Downloaded to: {filename}")
         
         # Send file
         if os.path.exists(filename):
@@ -166,12 +192,10 @@ def download_video():
             return jsonify({'error': 'File not found after download'}), 500
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/health', methods=['GET'])
-def health():
-    """Health check endpoint"""
-    return jsonify({'status': 'OK', 'timestamp': datetime.now().isoformat()}), 200
+        error_msg = str(e)
+        print(f"Error in download_video: {error_msg}")
+        print(traceback.format_exc())
+        return jsonify({'error': error_msg}), 400
 
 @app.route('/api/formats', methods=['GET'])
 def get_formats():
@@ -191,6 +215,7 @@ def cleanup_temp_files():
             file_path = os.path.join(TEMP_FOLDER, file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
+                print(f"Cleaned up: {file_path}")
     except Exception as e:
         print(f'Cleanup error: {e}')
 
@@ -211,6 +236,9 @@ def internal_error(error):
 if __name__ == '__main__':
     # Run cleanup on startup
     cleanup_temp_files()
+    
+    print("Starting Easy Saver API...")
+    print("API running at http://0.0.0.0:5000")
     
     # Start Flask app
     app.run(
