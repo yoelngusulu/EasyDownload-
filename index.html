@@ -1,100 +1,77 @@
-<!DOCTYPE html>
-<html lang="sw">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Easy Saver</title>
+ }
+ .brand-icon {
+   width: 24px;
+   height: 24px;
+ }
 
-  <style>
-    :root {
-      --bg: #07111f;
-      --surface: #101c2f;
-      --surface-2: #16243a;
-      --surface-3: #20304a;
-      --text: #f7fbff;
-      --muted: #a9b7c8;
-      --soft: #708198;
-      --line: #263853;
-      --accent: #20c7a7;
-      --accent-2: #ffc857;
-      --danger: #ff6b6b;
-      --ok: #5ee19a;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-      --radius-lg: 14px;
-      --radius-md: 8px;
-      --radius-sm: 6px;
-      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --ease: 180ms ease;
-    }
+ .nav-links {
+   display: flex;
+   align-items: center;
+   gap: 1.5rem;
+ }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+ .nav-links a {
+   color: var(--muted);
+   text-decoration: none;
+   transition: color var(--ease);
+ }
 
-    html {
-      scroll-behavior: smooth;
-    }
+ .nav-links a:hover {
+   color: var(--accent);
+ }
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(32, 199, 167, 0.16), transparent 32rem),
-        linear-gradient(135deg, #07111f 0%, #0d1727 52%, #111827 100%);
-      color: var(--text);
-      font-family: var(--font);
-      line-height: 1.5;
-    }
+ .cta-button {
+   padding: 12px 20px;
+   background-color: var(--accent);
+   color: #07111f;
+   border: none;
+   border-radius: var(--radius-sm);
+   cursor: pointer;
+   transition: background-color var(--ease);
+ }
 
-    button,
-    input,
-    select {
-      font: inherit;
-    }
+ .cta-button:hover {
+   background-color: var(--accent-2);
+ }
 
-    button,
-    a {
-      -webkit-tap-highlight-color: transparent;
-    }
+ .site-footer {
+   margin-top: auto;
+   padding: 20px 0;
+   text-align: center;
+   color: var(--muted);
+   background-color: var(--surface);
+ }
 
-    .site-header {
-      width: 100%;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(7, 17, 31, 0.78);
-      backdrop-filter: blur(18px);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
+ </style>
+</head>
+<body>
 
-    .nav {
-      width: min(1160px, calc(100% - 32px));
-      min-height: 72px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
+ <header class="site-header">
+   <nav class="nav">
+     <a href="#" class="brand">
+       <div class="brand-mark">ES</div>
+       <span>Easy Saver</span>
+     </a>
+     <div class="nav-links">
+       <a href="#features">Makala</a>
+       <a href="#about">Kuhusu</a>
+       <a href="#contact">Wasiliana</a>
+     </div>
+     <button class="cta-button">Anza Sasa</button>
+   </nav>
+ </header>
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: 0;
-      white-space: nowrap;
-    }
+ <main>
+   <section id="features">
+     <h1>Karibu kwenye Easy Saver</h1>
+     <p>Hapa kuna njia rahisi za kuokoa pesa zako.</p>
+   </section>
 
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-md);
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #07111f;
-      box-shadow: 0 12px 30px rgba(32, 199, 167, 0.28);
+   <footer class="site-footer">
+     <p>&copy; 2023 Easy Saver. Haki zote zimehifadhiwa.</p>
+   </footer>
+ </main>
+
+</body>
+</html>
+
