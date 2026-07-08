@@ -1,84 +1,28 @@
-<!DOCTYPE html>
-<html lang="sw">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Easy Saver - Okoa Pesa Kirahisi</title>
-  <style>
-    /* CSS Styles */
-    :root {
-      --accent: #2563eb;
-      --accent-2: #1d4ed8;
-      --muted: #64748b;
-      --surface: #f8fafc;
-      --radius-sm: 8px;
-      --ease: 0.3s ease;
-    }
+<style>
+    /* Muonekano wa Vidmate-style */
+    .hero { background: #1e293b; color: white; padding: 60px 20px; }
+    .search-container { max-width: 700px; margin: 0 auto; display: flex; gap: 10px; }
+    .search-container input { flex: 1; padding: 15px; border-radius: 30px; border: none; }
+    .search-container button { padding: 10px 30px; border-radius: 30px; background: #e11d48; color: white; border: none; font-weight: bold; }
+    
+    .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+    .card { background: white; padding: 10px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .card img { width: 100%; border-radius: 8px; }
+</style>
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
+<section class="hero">
+    <h1>Pakua Video na Muziki kwa Urahisi</h1>
+    <div class="search-container">
+        <input type="text" placeholder="Paste link ya video hapa (YouTube, Facebook, Instagram...)" id="urlInput">
+        <button onclick="processDownload()">Download</button>
+    </div>
+</section>
 
-    /* Header */
-    .site-header { padding: 1rem 2rem; border-bottom: 1px solid #e2e8f0; background: white; }
-    .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: bold; text-decoration: none; color: #000; font-size: 1.2rem; }
-    .brand-mark { background: var(--accent); color: white; padding: 5px 10px; border-radius: 4px; }
-
-    .nav-links { display: flex; align-items: center; gap: 1.5rem; }
-    .nav-links a { color: var(--muted); text-decoration: none; transition: color var(--ease); }
-    .nav-links a:hover { color: var(--accent); }
-
-    .cta-button { padding: 10px 20px; background-color: var(--accent); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: background-color var(--ease); font-weight: 600; }
-    .cta-button:hover { background-color: var(--accent-2); }
-
-    /* Hero Section */
-    main { flex: 1; }
-    .hero { text-align: center; padding: 100px 20px; background: linear-gradient(to bottom, #eff6ff, white); }
-    .hero h1 { font-size: 3rem; margin-bottom: 20px; color: #1e293b; }
-    .hero p { font-size: 1.25rem; color: var(--muted); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
-    .hero-actions { display: flex; gap: 20px; justify-content: center; align-items: center; }
-    .secondary-link { color: var(--accent); text-decoration: none; font-weight: 600; }
-
-    /* Footer */
-    .site-footer { padding: 40px 0; text-align: center; color: var(--muted); background-color: var(--surface); }
-  </style>
-</head>
-<body>
-
-  <header class="site-header">
-    <nav class="nav">
-      <a href="#" class="brand">
-        <div class="brand-mark">ES</div>
-        <span>Easy Saver</span>
-      </a>
-      <div class="nav-links">
-        <a href="#features">Makala</a>
-        <a href="#about">Kuhusu</a>
-        <a href="#contact">Wasiliana</a>
-      </div>
-      <button class="cta-button" onclick="alert('Karibu kwenye Easy Saver!')">Anza Sasa</button>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero">
-      <h1>Okoa Pesa Kirahisi na Easy Saver</h1>
-      <p>Dhibiti akiba yako, panga bajeti, na timiza malengo yako ya kifedha kwa urahisi kabisa.</p>
-      <div class="hero-actions">
-        <button class="cta-button" onclick="alert('Jisajili hivi karibuni!')">Jisajili Sasa</button>
-        <a href="#about" class="secondary-link">Jifunze Zaidi →</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p>&copy; 2026 Easy Saver. Haki zote zimehifadhiwa.</p>
-  </footer>
-
-  <script>
-    // JavaScript placeholder
-    console.log("Easy Saver Website Loaded Successfully");
-  </script>
-
-</body>
-</html>
+<section class="content-grid" id="trending">
+    <!-- Hapa ndipo video zinazovuma zitakaa -->
+    <div class="card">
+        <img src="video-placeholder.jpg" alt="Video">
+        <p>Video ya Kusisimua</p>
+    </div>
+    <!-- ...card zaidi -->
+</section>
