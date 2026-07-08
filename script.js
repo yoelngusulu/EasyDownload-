@@ -1,3 +1,6 @@
+// API Base URL - adjust based on your deployment
+const API_BASE_URL = window.location.origin === 'file://' ? 'http://localhost:5000' : window.location.origin;
+
 // Validate URL
 function isValidUrl(string) {
     try {
@@ -20,8 +23,10 @@ function detectVideoSource(url) {
 // Show Status Message
 function showStatus(message, type) {
     const statusMsg = document.getElementById('statusMessage');
-    statusMsg.innerHTML = message;
-    statusMsg.className = `status ${type}`;
+    if (statusMsg) {
+        statusMsg.innerHTML = message;
+        statusMsg.className = `status ${type}`;
+    }
 }
 
 // Process Video Link
@@ -32,9 +37,9 @@ async function processVideo() {
     const formatSelection = document.getElementById('formatSelection');
 
     // Reset
-    videoInfo.style.display = 'none';
-    downloadBtn.classList.remove('show');
-    formatSelection.classList.remove('show');
+    if (videoInfo) videoInfo.style.display = 'none';
+    if (downloadBtn) downloadBtn.classList.remove('show');
+    if (formatSelection) formatSelection.classList.remove('show');
 
     // Validate
     if (!url) {
@@ -42,7 +47,7 @@ async function processVideo() {
         return;
     }
 
-    if (!isValidUrl(url)) {
+    if (!isValidUrl(url) && !url.includes('youtu') && !url.includes('tiktok') && !url.includes('instagram') && !url.includes('facebook')) {
         showStatus('❌ Link si halali. Tafadhali angalia URL.', 'error');
         return;
     }
@@ -51,30 +56,38 @@ async function processVideo() {
 
     try {
         // Call API to process video
-        const response = await fetch('/api/video/info', {
+        const response = await fetch(`${API_BASE_URL}/api/video/info`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ url: url })
         });
 
-        if (!response.ok) {
-            throw new Error('Kosa la API: ' + response.statusText);
-        }
-
         const data = await response.json();
 
-        // Display video info
-        document.getElementById('videoTitle').textContent = data.title || 'Video';
-        document.getElementById('videoSource').textContent = data.source || 'Unknown';
-        document.getElementById('videoDuration').textContent = data.duration || 'N/A';
-        document.getElementById('videoSize').textContent = data.size || 'N/A';
+        if (!response.ok) {
+            throw new Error(data.error || 'API error: ' + response.statusText);
+        }
 
-        videoInfo.style.display = 'block';
-        downloadBtn.classList.add('show');
-        formatSelection.classList.add('show');
+        // Display video info
+        const titleEl = document.getElementById('videoTitle');
+        const sourceEl = document.getElementById('videoSource');
+        const durationEl = document.getElementById('videoDuration');
+        const sizeEl = document.getElementById('videoSize');
+
+        if (titleEl) titleEl.textContent = data.title || 'Video';
+        if (sourceEl) sourceEl.textContent = data.source || 'Unknown';
+        if (durationEl) durationEl.textContent = data.duration || 'N/A';
+        if (sizeEl) sizeEl.textContent = data.size || 'N/A';
+
+        if (videoInfo) videoInfo.style.display = 'block';
+        if (downloadBtn) downloadBtn.classList.add('show');
+        if (formatSelection) formatSelection.classList.add('show');
 
         showStatus('✅ Video imejifunza! Chagua muundo na udownload.', 'success');
     } catch (error) {
+        console.error('Error:', error);
         showStatus('❌ Kosa: ' + error.message, 'error');
     }
 }
@@ -82,16 +95,19 @@ async function processVideo() {
 // Start Download
 async function startDownload() {
     const url = document.getElementById('videoUrl').value.trim();
-    const format = document.querySelector('input[name="format"]:checked').value;
+    const formatInput = document.querySelector('input[name="format"]:checked');
+    const format = formatInput ? formatInput.value : 'mp4';
     const downloadBtn = document.getElementById('downloadBtn');
 
-    downloadBtn.disabled = true;
+    if (downloadBtn) downloadBtn.disabled = true;
     showStatus('<span class="spinner"></span> Inadownload... Hii itachukua muda.', 'loading');
 
     try {
-        const response = await fetch('/api/video/download', {
+        const response = await fetch(`${API_BASE_URL}/api/video/download`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ 
                 url: url,
                 format: format 
@@ -99,7 +115,8 @@ async function startDownload() {
         });
 
         if (!response.ok) {
-            throw new Error('Download error: ' + response.statusText);
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Download error: ' + response.statusText);
         }
 
         const blob = await response.blob();
@@ -110,12 +127,14 @@ async function startDownload() {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(downloadUrl);
+        a.remove();
 
         showStatus('✅ Download imekamilika! Angalia Downloads folder.', 'success');
     } catch (error) {
+        console.error('Error:', error);
         showStatus('❌ Kosa la download: ' + error.message, 'error');
     } finally {
-        downloadBtn.disabled = false;
+        if (downloadBtn) downloadBtn.disabled = false;
     }
 }
 
@@ -129,4 +148,10 @@ function handleKeyPress(event) {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Easy Saver loaded successfully");
+    
+    // Check if API is available
+    fetch(`${API_BASE_URL}/api/health`)
+        .then(r => r.json())
+        .then(data => console.log("API Status:", data))
+        .catch(e => console.warn("API not available at", API_BASE_URL));
 });
