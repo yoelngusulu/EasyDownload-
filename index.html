@@ -4,22 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Easy Saver - Pakua Video Mtandaoni</title>
-    <style>
-        body { font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-        
-        /* Header */
-        header { background: #fff; padding: 15px 20px; border-bottom: 3px solid #e11d48; display: flex; align-items: center; gap: 10px; }
-        .logo { font-weight: bold; color: #e11d48; font-size: 1.5rem; }
-
-        /* Hero Section */
-        .hero { background: #fff; padding: 60px 20px; text-align: center; border-bottom: 1px solid #ddd; }
-        .search-box { max-width: 650px; margin: 20px auto; display: flex; }
-        .search-box input { flex: 1; padding: 15px; border: 2px solid #ddd; border-radius: 5px 0 0 5px; outline: none; }
-        .search-box button { padding: 15px 30px; background: #e11d48; border: none; color: white; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold; }
-
-        /* Maelezo chini */
-        .content { max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.6; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -28,22 +13,83 @@
 </header>
 
 <div class="hero">
-    <h1>Easy Saver - Youtube Downloader</h1>
+    <h1>Easy Saver - YouTube Downloader</h1>
+    <p>Pakua video na audio kwa ubora wa juu kutoka YouTube, TikTok, Instagram, Facebook</p>
+    
     <div class="search-box">
-        <input type="text" id="url" placeholder="Search or paste link here...">
-        <button onclick="downloadVideo()">Start →</button>
+        <input type="text" id="videoUrl" placeholder="Ingiza au kubandika link ya video..." onkeypress="handleKeyPress(event)">
+        <button onclick="processVideo()">Tafuta →</button>
     </div>
+    
+    <div id="statusMessage" class="status"></div>
+</div>
+
+<div id="videoInfo" class="video-info">
+    <h3>Taarifa za Video</h3>
+    <div class="video-info-item">
+        <span class="video-info-label">Jina:</span>
+        <span class="video-info-value" id="videoTitle">-</span>
+    </div>
+    <div class="video-info-item">
+        <span class="video-info-label">Chanzo:</span>
+        <span class="video-info-value" id="videoSource">-</span>
+    </div>
+    <div class="video-info-item">
+        <span class="video-info-label">Muda:</span>
+        <span class="video-info-value" id="videoDuration">-</span>
+    </div>
+    <div class="video-info-item">
+        <span class="video-info-label">Ukubwa:</span>
+        <span class="video-info-value" id="videoSize">-</span>
+    </div>
+
+    <div id="formatSelection" class="format-selection">
+        <label>
+            <input type="radio" name="format" value="mp4" checked> Video (MP4) - Ubora wa juu
+        </label>
+        <label>
+            <input type="radio" name="format" value="mp3"> Audio (MP3) - Sauti tu
+        </label>
+        <label>
+            <input type="radio" name="format" value="360p"> Video (360p) - Ubora wa chini
+        </label>
+    </div>
+
+    <button id="downloadBtn" class="download-btn" onclick="startDownload()">
+        Download Sasa ⬇️
+    </button>
 </div>
 
 <div class="content">
-    <h2>Pakua Video na Audio kutoka YouTube</h2>
-    <p>Easy Saver ni zana ya bure inayokuruhusu kupakua video na audio kwa ubora wa juu kutoka YouTube, Facebook, na mitandao mingine kwa urahisi.</p>
-</div>
-    <!-- Mfano wa sehemu ya kuweka tangazo -->
-<div class="ad-container" style="text-align: center; margin: 20px 0;">
-    <!-- Hapa ndipo utakapoweka code ya tangazo lako kutoka Google AdSense au network nyingine -->
-    <p style="color: #999;">[Hapa ndipo tangazo lako litakaa]</p>
+    <h2>Kuhusu Easy Saver</h2>
+    <p>Easy Saver ni zana ya bure inayokuruhusu kupakua video na audio kwa ubora wa juu kutoka YouTube, TikTok, Instagram, Facebook, na mitandao mingine kwa urahisi.</p>
+    
+    <div class="features">
+        <div class="feature-card">
+            <h4>⚡ Haraka</h4>
+            <p>Download videos haraka bila kuchelewa</p>
+        </div>
+        <div class="feature-card">
+            <h4>🔒 Salama</h4>
+            <p>Taka yako ni salama na private</p>
+        </div>
+        <div class="feature-card">
+            <h4>✨ Rahisi</h4>
+            <p>Interface rahisi na inayoeleweka</p>
+        </div>
+        <div class="feature-card">
+            <h4>🎵 Multi-Format</h4>
+            <p>Download kwa MP4, MP3, na formats ingine</p>
+        </div>
+    </div>
 </div>
 
+<!-- Ad Space -->
+<div class="ad-container" style="text-align: center; margin: 20px 0;">
+    <p style="color: #999;">[Ad Space]</p>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
+
