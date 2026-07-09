@@ -123,4 +123,4 @@ Open source - MIT License
 
 ---
 
-**Easy Saver © 2024**
+**Easy Saver © 2026**
