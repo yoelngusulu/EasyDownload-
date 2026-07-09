@@ -1,35 +1,67 @@
+const API_BASE_URL = 'http://localhost:5000';
+
+async function processVideo() {
+    const url = document.getElementById('videoUrl').value.trim();
+    const statusMsg = document.getElementById('statusMessage');
+    const btn = document.querySelector('button');
+    
+    if (!url) return showStatus('⚠️ Ingiza link kwanza', 'error');
+    
+    btn.disabled = true;
+    showStatus('Inachakata...', 'loading');
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/video/info`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({url})
+        });
+        const data = await response.json();
+        
+        document.getElementById('videoTitle').textContent = data.title;
+        document.getElementById('videoInfo').style.display = 'block';
+        document.getElementById('downloadBtn').classList.add('show');
+        statusMsg.style.display = 'none';
+    } catch (e) {
+        showStatus('❌ Kosa: ' + e.message, 'error');
+    } finally {
+        btn.disabled = false;
+    }
+}
+
 async function startDownload() {
     const url = document.getElementById('videoUrl').value.trim();
     const format = document.querySelector('input[name="format"]:checked').value;
-    const downloadBtn = document.getElementById('downloadBtn');
+    const btn = document.getElementById('downloadBtn');
 
-    downloadBtn.disabled = true;
-    downloadBtn.textContent = "Inapakua... Subiri...";
-    
+    btn.disabled = true;
+    btn.textContent = "Inapakua...";
+
     try {
         const response = await fetch(`${API_BASE_URL}/api/video/download`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url, format })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({url, format})
         });
 
-        if (!response.ok) throw new Error("Imeshindwa kupakua");
+        if (!response.ok) throw new Error("Download imeshindwa");
 
-        // Njia bora ya kudownload file kutoka Flask
         const blob = await response.blob();
-        const urlObj = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = urlObj;
-        a.download = `EasySaver_Video.mp4`;
-        document.body.appendChild(a);
+        a.href = window.URL.createObjectURL(blob);
+        a.download = "video.mp4";
         a.click();
-        a.remove();
-        
-        showStatus('✅ Imekamilika!', 'success');
-    } catch (err) {
-        showStatus('❌ Kosa: ' + err.message, 'error');
+    } catch (e) {
+        alert("Kosa: " + e.message);
     } finally {
-        downloadBtn.disabled = false;
-        downloadBtn.textContent = "Download Sasa ⬇️";
+        btn.disabled = false;
+        btn.textContent = "Download Sasa ⬇️";
     }
+}
+
+function showStatus(msg, type) {
+    const s = document.getElementById('statusMessage');
+    s.innerHTML = msg;
+    s.className = `status ${type}`;
+    s.style.display = 'block';
 }
