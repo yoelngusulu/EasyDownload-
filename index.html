@@ -2,94 +2,29 @@
 <html lang="sw">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Easy Saver - Pakua Video Mtandaoni</title>
+    <title>Easy Saver</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<header>
-    <div class="logo">Easy Saver</div>
-</header>
-
-<div class="hero">
-    <h1>Easy Saver - YouTube Downloader</h1>
-    <p>Pakua video na audio kwa ubora wa juu kutoka YouTube, TikTok, Instagram, Facebook</p>
-    
-    <div class="search-box">
-        <input type="text" id="videoUrl" placeholder="Ingiza au kubandika link ya video..." onkeypress="handleKeyPress(event)">
-        <button onclick="processVideo()">Tafuta →</button>
-    </div>
-    
-    <div id="statusMessage" class="status"></div>
-</div>
-
-<div id="videoInfo" class="video-info">
-    <h3>Taarifa za Video</h3>
-    <div class="video-info-item">
-        <span class="video-info-label">Jina:</span>
-        <span class="video-info-value" id="videoTitle">-</span>
-    </div>
-    <div class="video-info-item">
-        <span class="video-info-label">Chanzo:</span>
-        <span class="video-info-value" id="videoSource">-</span>
-    </div>
-    <div class="video-info-item">
-        <span class="video-info-label">Muda:</span>
-        <span class="video-info-value" id="videoDuration">-</span>
-    </div>
-    <div class="video-info-item">
-        <span class="video-info-label">Ukubwa:</span>
-        <span class="video-info-value" id="videoSize">-</span>
-    </div>
-
-    <div id="formatSelection" class="format-selection">
-        <label>
-            <input type="radio" name="format" value="mp4" checked> Video (MP4) - Ubora wa juu
-        </label>
-        <label>
-            <input type="radio" name="format" value="mp3"> Audio (MP3) - Sauti tu
-        </label>
-        <label>
-            <input type="radio" name="format" value="360p"> Video (360p) - Ubora wa chini
-        </label>
-    </div>
-
-    <button id="downloadBtn" class="download-btn" onclick="startDownload()">
-        Download Sasa ⬇️
-    </button>
-</div>
-
-<div class="content">
-    <h2>Kuhusu Easy Saver</h2>
-    <p>Easy Saver ni zana ya bure inayokuruhusu kupakua video na audio kwa ubora wa juu kutoka YouTube, TikTok, Instagram, Facebook, na mitandao mingine kwa urahisi.</p>
-    
-    <div class="features">
-        <div class="feature-card">
-            <h4>⚡ Haraka</h4>
-            <p>Download videos haraka bila kuchelewa</p>
+    <header><div class="logo">Easy Saver</div></header>
+    <div class="hero">
+        <h1>Easy Saver Downloader</h1>
+        <div class="search-box">
+            <input type="text" id="videoUrl" placeholder="Bandika link hapa...">
+            <button onclick="processVideo()">Tafuta →</button>
         </div>
-        <div class="feature-card">
-            <h4>🔒 Salama</h4>
-            <p>Taka yako ni salama na private</p>
-        </div>
-        <div class="feature-card">
-            <h4>✨ Rahisi</h4>
-            <p>Interface rahisi na inayoeleweka</p>
-        </div>
-        <div class="feature-card">
-            <h4>🎵 Multi-Format</h4>
-            <p>Download kwa MP4, MP3, na formats ingine</p>
-        </div>
+        <div id="statusMessage" class="status"></div>
     </div>
-</div>
 
-<!-- Ad Space -->
-<div class="ad-container" style="text-align: center; margin: 20px 0;">
-    <p style="color: #999;">[Ad Space]</p>
-</div>
+    <div id="videoInfo" class="video-info" style="display:none;">
+        <h3 id="videoTitle">Video Title</h3>
+        <div class="format-selection show">
+            <label><input type="radio" name="format" value="mp4" checked> MP4 (Video)</label>
+            <label><input type="radio" name="format" value="mp3"> MP3 (Audio)</label>
+        </div>
+        <button id="downloadBtn" class="download-btn" onclick="startDownload()">Download Sasa ⬇️</button>
+    </div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-
