@@ -23,7 +23,9 @@ def get_video_info(url):
             'duration': f"{info.get('duration', 0)//60}:{info.get('duration', 0)%60:02d}",
             'source': 'YouTube/Social'
         }
-
+@app.route('/')
+def index():
+    return "Easy Saver is running! Go to /api/health to check status."
 @app.route('/api/video/info', methods=['POST'])
 def video_info():
     data = request.get_json()
