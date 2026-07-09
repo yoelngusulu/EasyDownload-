@@ -1,5 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000';
-
+const API_BASE_URL = 'https://easydownload-ggqd.onrender.com';
 async function processVideo() {
     const url = document.getElementById('videoUrl').value.trim();
     const statusMsg = document.getElementById('statusMessage');
