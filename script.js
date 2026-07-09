@@ -47,7 +47,8 @@ async function processVideo() {
         return;
     }
 
-    if (!isValidUrl(url) && !url.includes('youtu') && !url.includes('tiktok') && !url.includes('instagram') && !url.includes('facebook')) {
+    // FIXED: Badilisha && kuwa || - link ni halali kama inapatiana URL halali AU ina domain inayotumika
+    if (!isValidUrl(url) || (!url.includes('youtu') && !url.includes('tiktok') && !url.includes('instagram') && !url.includes('facebook'))) {
         showStatus('❌ Link si halali. Tafadhali angalia URL.', 'error');
         return;
     }
